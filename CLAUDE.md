@@ -18,16 +18,18 @@ npm run lint     # Run ESLint
 ## Architecture
 
 - **Entry point**: `src/main.jsx` — renders `<App />` into `#root`
-- **Main component**: `src/App.jsx` — single-file app with all logic
-  - Uses `useState` for transactions list and form state
-  - Transactions: array of `{ id, description, amount, type, category, date }`
-  - Categories: `food`, `housing`, `utilities`, `transport`, `entertainment`, `salary`, `other`
-  - Computes income/expense totals and balance
-  - Supports filtering by type and category
+- **Components**:
+  - `src/App.jsx` — root component, holds shared `transactions` state
+  - `src/Summary.jsx` — displays income, expenses, and balance summary cards (calculates totals from transactions)
+  - `src/TransactionForm.jsx` — form to add new transactions (description, amount, type, category)
+  - `src/TransactionList.jsx` — displays filtered transactions table with type/category filters
+- **Data model**: Transactions are `{ id, description, amount, type, category, date }`
+  - `type`: `"income"` or `"expense"`
+  - `category`: `food`, `housing`, `utilities`, `transport`, `entertainment`, `salary`, `other`
+  - `amount`: number
 - **Styling**: `src/App.css` and `src/index.css`
 - **No backend** — data stored in component state only (resets on refresh)
 
 ## Notes
 
-- Bug intentionally present: one transaction has `type: "expense"` but should be `"income"` (Freelance Work, id: 4)
 - No persistence layer — future work may add localStorage or API integration
