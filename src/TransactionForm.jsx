@@ -1,6 +1,6 @@
 import { useState } from 'react';
-
-const categories = ["food", "housing", "utilities", "transport", "entertainment", "salary", "other"];
+import { CATEGORIES } from './constants';
+import { formatCategory } from './utils/format';
 
 function TransactionForm({ onAddTransaction }) {
   const [description, setDescription] = useState("");
@@ -10,12 +10,29 @@ function TransactionForm({ onAddTransaction }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!description || !amount) return;
+
+    const trimmedDescription = description.trim();
+    const parsedAmount = parseFloat(amount);
+
+    if (!trimmedDescription) {
+      alert("Please enter a description");
+      return;
+    }
+
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      alert("Please enter a valid amount greater than 0");
+      return;
+    }
+
+    if (parsedAmount > 1000000) {
+      alert("Amount exceeds maximum allowed value");
+      return;
+    }
 
     const newTransaction = {
-      id: Date.now(),
-      description,
-      amount: Number(amount),
+      id: crypto.randomUUID(),
+      description: trimmedDescription,
+      amount: parsedAmount,
       type,
       category,
       date: new Date().toISOString().split('T')[0],
@@ -32,27 +49,35 @@ function TransactionForm({ onAddTransaction }) {
     <div className="add-transaction">
       <h2>+ New Transaction</h2>
       <form onSubmit={handleSubmit}>
+        <label htmlFor="description" className="sr-only">Description</label>
         <input
+          id="description"
           type="text"
           placeholder="Description (e.g., Groceries)"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          required
         />
+        <label htmlFor="amount" className="sr-only">Amount</label>
         <input
+          id="amount"
           type="number"
           placeholder="$0.00"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          min="0"
+          min="0.01"
           step="0.01"
+          required
         />
-        <select value={type} onChange={(e) => setType(e.target.value)}>
+        <label htmlFor="type" className="sr-only">Type</label>
+        <select id="type" value={type} onChange={(e) => setType(e.target.value)}>
           <option value="expense">Expense</option>
           <option value="income">Income</option>
         </select>
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          {categories.map(cat => (
-            <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
+        <label htmlFor="category" className="sr-only">Category</label>
+        <select id="category" value={category} onChange={(e) => setCategory(e.target.value)}>
+          {CATEGORIES.map(cat => (
+            <option key={cat} value={cat}>{formatCategory(cat)}</option>
           ))}
         </select>
         <button type="submit">Add Transaction</button>

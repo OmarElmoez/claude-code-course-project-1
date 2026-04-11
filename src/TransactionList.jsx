@@ -1,31 +1,24 @@
-import { useState } from 'react';
-
-const categories = ["food", "housing", "utilities", "transport", "entertainment", "salary", "other"];
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount);
-}
-
-function formatCategory(category) {
-  return category.charAt(0).toUpperCase() + category.slice(1);
-}
+import { useState, useMemo } from 'react';
+import { CATEGORIES } from './constants';
+import { formatCurrency, formatCategory } from './utils/format';
 
 function TransactionList({ transactions, onRemoveTransaction }) {
   const [filterType, setFilterType] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
 
-  let filteredTransactions = transactions;
-  if (filterType !== "all") {
-    filteredTransactions = filteredTransactions.filter(t => t.type === filterType);
-  }
-  if (filterCategory !== "all") {
-    filteredTransactions = filteredTransactions.filter(t => t.category === filterCategory);
-  }
+  const filteredTransactions = useMemo(() => {
+    return transactions.filter(t => {
+      if (filterType !== "all" && t.type !== filterType) return false;
+      if (filterCategory !== "all" && t.category !== filterCategory) return false;
+      return true;
+    });
+  }, [transactions, filterType, filterCategory]);
+
+  const handleDelete = (id, description) => {
+    if (window.confirm(`Are you sure you want to delete "${description}"?`)) {
+      onRemoveTransaction(id);
+    }
+  };
 
   return (
     <div className="transactions">
@@ -38,7 +31,7 @@ function TransactionList({ transactions, onRemoveTransaction }) {
         </select>
         <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
           <option value="all">All Categories</option>
-          {categories.map(cat => (
+          {CATEGORIES.map(cat => (
             <option key={cat} value={cat}>{formatCategory(cat)}</option>
           ))}
         </select>
@@ -65,12 +58,9 @@ function TransactionList({ transactions, onRemoveTransaction }) {
               </td>
               <td>
                 <button
-                  onClick={() => {
-                    if (window.confirm(`Are you sure you want to delete "${t.description}"?`)) {
-                      onRemoveTransaction(t.id);
-                    }
-                  }}
+                  onClick={() => handleDelete(t.id, t.description)}
                   className="delete-btn"
+                  aria-label={`Delete ${t.description}`}
                 >
                   Delete
                 </button>

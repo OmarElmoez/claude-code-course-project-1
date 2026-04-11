@@ -1,22 +1,25 @@
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
+import { useMemo } from 'react';
+import { formatCurrency } from './utils/format';
 
 function Summary({ transactions }) {
-  const totalIncome = transactions
-    .filter(t => t.type === "income")
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  const totalExpenses = transactions
-    .filter(t => t.type === "expense")
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  const balance = totalIncome - totalExpenses;
+  const { totalIncome, totalExpenses, balance } = useMemo(() => {
+    const totals = transactions.reduce(
+      (acc, t) => {
+        if (t.type === 'income') {
+          acc.income += t.amount;
+        } else {
+          acc.expenses += t.amount;
+        }
+        return acc;
+      },
+      { income: 0, expenses: 0 }
+    );
+    return {
+      totalIncome: totals.income,
+      totalExpenses: totals.expenses,
+      balance: totals.income - totals.expenses,
+    };
+  }, [transactions]);
 
   return (
     <div className="summary">

@@ -1,19 +1,18 @@
+import { useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 
 const COLORS = ['#00ff88', '#ff4757', '#00d4ff', '#a855f7', '#ff9500', '#ffd700', '#ff6b9d'];
 
 function SpendingByCategory({ transactions }) {
-  const data = transactions
-    .filter(t => t.type === 'expense')
-    .reduce((acc, t) => {
-      const existing = acc.find(item => item.name === t.category);
-      if (existing) {
-        existing.value += t.amount;
-      } else {
-        acc.push({ name: t.category, value: t.amount });
-      }
-      return acc;
-    }, []);
+  const data = useMemo(() => {
+    const categoryMap = new Map();
+    transactions
+      .filter(t => t.type === 'expense')
+      .forEach(t => {
+        categoryMap.set(t.category, (categoryMap.get(t.category) || 0) + t.amount);
+      });
+    return Array.from(categoryMap, ([name, value]) => ({ name, value }));
+  }, [transactions]);
 
   if (data.length === 0) {
     return (
