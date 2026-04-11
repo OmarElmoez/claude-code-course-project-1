@@ -1,3 +1,12 @@
+function formatCurrency(amount) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
 function Summary({ transactions }) {
   const totalIncome = transactions
     .filter(t => t.type === "income")
@@ -13,15 +22,15 @@ function Summary({ transactions }) {
     <div className="summary">
       <div className="summary-card">
         <h3>Income</h3>
-        <p className="income-amount">+${totalIncome.toLocaleString()}</p>
+        <p className="income-amount">{formatCurrency(totalIncome)}</p>
       </div>
       <div className="summary-card">
         <h3>Expenses</h3>
-        <p className="expense-amount">-${totalExpenses.toLocaleString()}</p>
+        <p className="expense-amount">{formatCurrency(totalExpenses)}</p>
       </div>
       <div className="summary-card">
         <h3>Balance</h3>
-        <p className="balance-amount">${balance.toLocaleString()}</p>
+        <p className="balance-amount">{formatCurrency(balance)}</p>
       </div>
     </div>
   );

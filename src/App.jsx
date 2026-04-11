@@ -5,13 +5,6 @@ import TransactionForm from './TransactionForm'
 import TransactionList from './TransactionList'
 import SpendingByCategory from './SpendingByCategory'
 
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount);
-};
-
 function App() {
   const [transactions, setTransactions] = useState([
     { id: 1, description: "Salary", amount: 5000, type: "income", category: "salary", date: "2025-01-01" },
@@ -34,8 +27,8 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Finance Tracker</h1>
-      <p className="subtitle">Track your income and expenses</p>
+      <h1>⚡ Finance Tracker</h1>
+      <p className="subtitle">Dashboard // Track your income and expenses</p>
 
       <Summary transactions={transactions} />
       <SpendingByCategory transactions={transactions} />
