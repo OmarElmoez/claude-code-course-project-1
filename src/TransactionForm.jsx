@@ -43,6 +43,8 @@ function TransactionForm({ onAddTransaction }) {
           placeholder="Amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
+          min="0.01"
+          step="0.01"
         />
         <select value={type} onChange={(e) => setType(e.target.value)}>
           <option value="income">Income</option>
@@ -50,10 +52,10 @@ function TransactionForm({ onAddTransaction }) {
         </select>
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
           {categories.map(cat => (
-            <option key={cat} value={cat}>{cat}</option>
+            <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
           ))}
         </select>
-        <button type="submit">Add</button>
+        <button type="submit">Add Transaction</button>
       </form>
     </div>
   );

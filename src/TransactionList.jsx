@@ -2,6 +2,16 @@ import { useState } from 'react';
 
 const categories = ["food", "housing", "utilities", "transport", "entertainment", "salary", "other"];
 
+const categoryColors = {
+  food: { bg: '#fef3c7', text: '#92400e' },
+  housing: { bg: '#dbeafe', text: '#1e40af' },
+  utilities: { bg: '#d1fae5', text: '#065f46' },
+  transport: { bg: '#fce7f3', text: '#9d174d' },
+  entertainment: { bg: '#e0e7ff', text: '#3730a3' },
+  salary: { bg: '#d1fae5', text: '#065f46' },
+  other: { bg: '#f3f4f6', text: '#374151' },
+};
+
 function TransactionList({ transactions, onRemoveTransaction }) {
   const [filterType, setFilterType] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
@@ -26,7 +36,7 @@ function TransactionList({ transactions, onRemoveTransaction }) {
         <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
           <option value="all">All Categories</option>
           {categories.map(cat => (
-            <option key={cat} value={cat}>{cat}</option>
+            <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
           ))}
         </select>
       </div>
@@ -46,9 +56,22 @@ function TransactionList({ transactions, onRemoveTransaction }) {
             <tr key={t.id}>
               <td>{t.date}</td>
               <td>{t.description}</td>
-              <td>{t.category}</td>
+              <td>
+                <span style={{
+                  display: 'inline-block',
+                  padding: '4px 10px',
+                  borderRadius: '20px',
+                  fontSize: '0.75rem',
+                  fontWeight: 500,
+                  background: categoryColors[t.category]?.bg || '#f3f4f6',
+                  color: categoryColors[t.category]?.text || '#374151',
+                  textTransform: 'capitalize'
+                }}>
+                  {t.category}
+                </span>
+              </td>
               <td className={t.type === "income" ? "income-amount" : "expense-amount"}>
-                {t.type === "income" ? "+" : "-"}${t.amount}
+                {t.type === "income" ? "+" : "-"}${t.amount.toLocaleString()}
               </td>
               <td>
                 <button

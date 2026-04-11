@@ -15,7 +15,12 @@ function SpendingByCategory({ transactions }) {
       return acc;
     }, []);
 
-  if (data.length === 0) {
+  const formattedData = data.map(item => ({
+    ...item,
+    value: Number(item.value.toFixed(2))
+  }));
+
+  if (formattedData.length === 0) {
     return (
       <div className="spending-chart">
         <h2>Spending by Category</h2>
@@ -28,13 +33,21 @@ function SpendingByCategory({ transactions }) {
     <div className="spending-chart">
       <h2>Spending by Category</h2>
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="value" fill="#8884d8" />
+        <BarChart data={formattedData}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
+          <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#6b6b6b' }} axisLine={{ stroke: '#e5e5e5' }} tickLine={{ stroke: '#e5e5e5' }} />
+          <YAxis tick={{ fontSize: 12, fill: '#6b6b6b' }} axisLine={{ stroke: '#e5e5e5' }} tickLine={{ stroke: '#e5e5e5' }} tickFormatter={(value) => `$${value}`} />
+          <Tooltip
+            contentStyle={{
+              borderRadius: '8px',
+              border: 'none',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              fontSize: '13px'
+            }}
+            formatter={(value) => [`$${value}`, 'Amount']}
+          />
+          <Legend wrapperStyle={{ fontSize: '12px' }} />
+          <Bar dataKey="value" fill="#2563eb" radius={[6, 6, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
