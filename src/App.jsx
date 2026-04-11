@@ -3,6 +3,7 @@ import './App.css'
 import Summary from './Summary'
 import TransactionForm from './TransactionForm'
 import TransactionList from './TransactionList'
+import SpendingByCategory from './SpendingByCategory'
 
 function App() {
   const [transactions, setTransactions] = useState([
@@ -30,6 +31,7 @@ function App() {
       <p className="subtitle">Track your income and expenses</p>
 
       <Summary transactions={transactions} />
+      <SpendingByCategory transactions={transactions} />
       <TransactionForm onAddTransaction={handleAddTransaction} />
       <TransactionList transactions={transactions} onRemoveTransaction={handleRemoveTransaction} />
     </div>
