@@ -1,22 +1,35 @@
 :root {
-  /* Dark Dashboard Theme */
-  --bg-primary: #0f0f1a;
-  --bg-secondary: #1a1a2e;
-  --bg-card: #16213e;
-  --border-color: #2d3a5f;
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0b0;
-  --text-muted: #6b7280;
-  --accent-green: #00ff88;
-  --accent-red: #ff4757;
-  --accent-blue: #00d4ff;
-  --accent-purple: #a855f7;
-  --accent-orange: #ff9500;
-  --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.15);
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  /* Warm Dark Theme */
+  --bg-primary: #1a1714;
+  --bg-secondary: #232019;
+  --bg-card: #2a2520;
+  --bg-card-hover: #332e27;
+  --bg-elevated: #3a342d;
+  --border-color: #3d362e;
+  --border-subtle: #2d2822;
+  --text-primary: #f5efe6;
+  --text-secondary: #b8a99a;
+  --text-muted: #7a6e63;
+  --accent-amber: #f0a848;
+  --accent-amber-soft: #d4923e;
+  --accent-green: #5cb88a;
+  --accent-green-soft: #4a9e74;
+  --accent-red: #e07a5f;
+  --accent-red-soft: #c9664d;
+  --accent-warm: #e8935c;
+  --accent-copper: #c17767;
+  --accent-cream: #f2e8d9;
+  --gradient-warm: linear-gradient(135deg, #f0a848 0%, #e8935c 50%, #c17767 100%);
+  --gradient-subtle: linear-gradient(135deg, #3a342d 0%, #2a2520 100%);
+  --shadow-warm: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.25);
+  --shadow-glow-amber: 0 0 24px rgba(240, 168, 72, 0.15);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -26,8 +39,11 @@
 }
 
 body {
-  font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
+  background-image: 
+    radial-gradient(ellipse at 20% 50%, rgba(240, 168, 72, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(232, 147, 92, 0.02) 0%, transparent 50%);
 }
